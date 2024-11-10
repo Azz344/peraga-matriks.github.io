@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alat Peraga Matriks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            /* Contoh gradien dari merah muda ke kuning */
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+        
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(to right, #ff7e5f, #feb47b);
+            }
+            100% {
+                background: linear-gradient(to right, #86e3ce, #6e9ecf);
+            }
+        }
+        
+        table {
+            width: 100%;
+            /* Membuat tabel responsif */
+            border-collapse: collapse;
+            /* Menghilangkan jarak antara border sel */
+            margin-bottom: 20px;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            opacity: 1;
+            transform: scale(0.95);
+        }
+        
+        table th,
+        table td {
+            border: none;
+            /* Menghilangkan border */
+            padding: 10px;
+            /* Padding dalam sel */
+            text-align: center;
+            /* Pusatkan teks */
+        }
+        
+        table th {
+            background-color: #4CAF50;
+            /* Warna latar belakang header */
+            color: white;
+            /* Warna teks header */
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+            /* Warna latar belakang untuk baris genap */
+        }
+        
+        table tr:hover {
+            background-color: #f1f1f1;
+            /* Warna saat hover pada baris */
+        }
+        
+        table.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        input {
+            width: 50px;
+            text-align: center;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+            outline: none;
+        }
+        
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        h3 {
+            margin-top: 20px;
+            transition: color 0.3s;
+        }
+        
+        h3:hover {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Alat Peraga Matriks</h1>
+
+    <h2>Matriks Pertama</h2>
+    <label for="rows1">Jumlah Baris:</label>
+    <input type="number" id="rows1" min="1" value="2">
+    <label for="cols1">Jumlah Kolom:</label>
+    <input type="number" id="cols1" min="1" value="2">
+    <button onclick="createMatrix(1)">Buat Matriks</button>
+    <div id="matrix1"></div>
+
+    <h2>Matriks Kedua</h2>
+    <label for="rows2">Jumlah Baris:</label>
+    <input type="number" id="rows2" min="1" value="2">
+    <label for="cols2">Jumlah Kolom:</label>
+    <input type="number" id="cols2" min="1" value="2">
+    <button onclick="createMatrix(2)">Buat Matriks</button>
+    <div id="matrix2"></div>
+
+    <button onclick="calculate()">Hitung</button>
+
+    <h2>Hasil</h2>
+    <div id="result"></div>
+
+    <script>
+        function createMatrix(matrixNumber) {
+            const rows = document.getElementById(`rows${matrixNumber}`).value;
+            const cols = document.getElementById(`cols${matrixNumber}`).value;
+            let matrixHTML = `<table border="1"><tbody>`;
+
+            for (let i = 0; i < rows; i++) {
+                matrixHTML += `<tr>`;
+                for (let j = 0; j < cols; j++) {
+                    matrixHTML += `<td><input type="number" id="m${matrixNumber}r${i}c${j}" /></td>`;
+                }
+                matrixHTML += `</tr>`;
+            }
+            matrixHTML += `</tbody></table>`;
+            document.getElementById(`matrix${matrixNumber}`).innerHTML = matrixHTML;
+        }
+
+        function calculate() {
+            const rows1 = parseInt(document.getElementById('rows1').value);
+            const cols1 = parseInt(document.getElementById('cols1').value);
+            const rows2 = parseInt(document.getElementById('rows2').value);
+            const cols2 = parseInt(document.getElementById('cols2').value);
+
+            const matrix1 = [];
+            const matrix2 = [];
+
+            // Ambil nilai matriks pertama
+            for (let i = 0; i < rows1; i++) {
+                const row = [];
+                for (let j = 0; j < cols1; j++) {
+                    row.push(parseFloat(document.getElementById(`m1r${i}c${j}`).value) || 0);
+                }
+                matrix1.push(row);
+            }
+
+            // Ambil nilai matriks kedua
+            for (let i = 0; i < rows2; i++) {
+                const row = [];
+                for (let j = 0; j < cols2; j++) {
+                    row.push(parseFloat(document.getElementById(`m2r${i}c${j}`).value) || 0);
+                }
+                matrix2.push(row);
+            }
+
+            let resultHTML = "";
+
+            // Tampilkan ordo matriks
+            resultHTML += `<p> Ordo Matriks Pertama: ${rows1} x ${cols1}</p>`;
+            resultHTML += `<p>Ordo Matriks Kedua: ${rows2} x ${cols2}</p>`;
+
+            // Penjumlahan dan pengurangan
+            if (rows1 === rows2 && cols1 === cols2) {
+                const sum = [];
+                const diff = [];
+                for (let i = 0; i < rows1; i++) {
+                    const sumRow = [];
+                    const diffRow = [];
+                    for (let j = 0; j < cols1; j++) {
+                        sumRow.push(matrix1[i][j] + matrix2[i][j]);
+                        diffRow.push(matrix1[i][j] - matrix2[i][j]);
+                    }
+                    sum.push(sumRow);
+                    diff.push(diffRow);
+                }
+                resultHTML += "<h3>Hasil Penjumlahan:</h3><table border='1' style='opacity: 1;'><tbody>";
+                for (let i = 0; i < sum.length; i++) {
+                    resultHTML += "<tr>";
+                    for (let j = 0; j < sum[i].length; j++) {
+                        resultHTML += `<td>${sum[i][j]}</td>`;
+                    }
+                    resultHTML += "</tr>";
+                }
+                resultHTML += "</tbody></table>";
+
+                resultHTML += "<h3>Hasil Pengurangan:</h3><table border='1' style='opacity: 1;'><tbody>";
+                for (let i = 0; i < diff.length; i++) {
+                    resultHTML += "<tr>";
+                    for (let j = 0; j < diff[i].length; j++) {
+                        resultHTML += `<td>${diff[i][j]}</td>`;
+                    }
+                    resultHTML += "</tr>";
+                }
+                resultHTML += "</tbody></table>";
+            } else {
+                resultHTML += "<p>Matriks tidak dapat dijumlahkan atau dikurangkan (ukuran tidak sama).</p>";
+            }
+
+            // Perkalian
+            if (cols1 === rows2) {
+                const product = [];
+                for (let i = 0; i < rows1; i++) {
+                    const productRow = [];
+                    for (let j = 0; j < cols2; j++) {
+                        let sum = 0;
+                        for (let k = 0; k < cols1; k++) {
+                            sum += matrix1[i][k] * matrix2[k][j];
+                        }
+                        productRow.push(sum);
+                    }
+                    product.push(productRow);
+                }
+                resultHTML += "<h3>Hasil Perkalian:</h3><table border='1' style='opacity: 1;'><tbody>";
+                for (let i = 0; i < product.length; i++) {
+                    resultHTML += "<tr>";
+                    for (let j = 0; j < product[i].length; j++) {
+                        resultHTML += `<td>${product[i][j]}</td>`;
+                    }
+                    resultHTML += "</tr>";
+                }
+                resultHTML += "</tbody></table>";
+            } else {
+                resultHTML += "<p>Matriks tidak dapat dikalikan (jumlah kolom matriks pertama tidak sama dengan jumlah baris matriks kedua).</p>";
+            }
+
+            document.getElementById('result').innerHTML = resultHTML;
+
+            // Tambahkan animasi untuk hasil
+            const tables = document.querySelectorAll('#result table');
+            tables.forEach(table => {
+                table.style.opacity = '0';
+                table.classList.remove('visible'); // Hapus kelas visible
+                setTimeout(() => {
+                    table.style.opacity = '1';
+                    table.classList.add('visible'); // Tambahkan kelas visible
+                }, 100);
+            });
+        }
+    </script>
+</body>
+
+</html>
